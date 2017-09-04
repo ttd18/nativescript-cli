@@ -51,7 +51,9 @@ async function createProjectFile(testInjector: IInjector): Promise<string> {
 
 	const projectData = {
 		"name": "myProject",
-		"nativescript": {}
+		"nativescript": {
+			id: { android: "", ios: ""}
+		}
 	};
 	testInjector.resolve("fs").writeJson(path.join(tempFolder, "package.json"), projectData);
 

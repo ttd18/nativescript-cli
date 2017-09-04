@@ -40,15 +40,15 @@ export class PluginVariablesService implements IPluginVariablesService {
 		this.$fs.writeFile(pluginConfigurationFilePath, pluginConfigurationFileContent);
 	}
 
-	public interpolateAppIdentifier(pluginConfigurationFilePath: string, projectData: IProjectData): void {
+	public interpolateAppIdentifier(pluginConfigurationFilePath: string, projectIdentifier: string): void {
 		const pluginConfigurationFileContent = this.$fs.readText(pluginConfigurationFilePath);
-		const newContent = this.interpolateCore("nativescript.id", projectData.projectId, pluginConfigurationFileContent);
+		const newContent = this.interpolateCore("nativescript.id", projectIdentifier, pluginConfigurationFileContent);
 		this.$fs.writeFile(pluginConfigurationFilePath, newContent);
 	}
 
-	public async interpolate(pluginData: IPluginData, pluginConfigurationFilePath: string, projectData: IProjectData): Promise<void> {
+	public async interpolate(pluginData: IPluginData, pluginConfigurationFilePath: string, projectData: IProjectData, projectIdentifier: string): Promise<void> {
 		await this.interpolatePluginVariables(pluginData, pluginConfigurationFilePath, projectData);
-		this.interpolateAppIdentifier(pluginConfigurationFilePath, projectData);
+		this.interpolateAppIdentifier(pluginConfigurationFilePath, projectIdentifier);
 	}
 
 	private interpolateCore(name: string, value: string, content: string): string {

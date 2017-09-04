@@ -30,7 +30,16 @@ export class ProjectData implements IProjectData {
 	public projectDir: string;
 	public platformsDir: string;
 	public projectFilePath: string;
-	public projectId: string;
+	public projectIdentifiers: Mobile.IProjectIdentifier;
+	get projectId(): string {
+		this.warnProjectId();
+		return this.projectIdentifiers.ios;
+	}
+	set projectId(identifier: string) {
+		this.warnProjectId();
+		this.projectIdentifiers.ios = identifier;
+		this.projectIdentifiers.android = identifier;
+	}
 	public projectName: string;
 	public appDirectoryPath: string;
 	public appResourcesDirectoryPath: string;
@@ -47,6 +56,7 @@ export class ProjectData implements IProjectData {
 
 	public initializeProjectData(projectDir?: string): void {
 		projectDir = projectDir || this.$projectHelper.projectDir;
+
 		// If no project found, projectDir should be null
 		if (projectDir) {
 			const projectFilePath = path.join(projectDir, this.$staticConfig.PROJECT_FILE_NAME);
@@ -70,7 +80,7 @@ export class ProjectData implements IProjectData {
 					this.projectFilePath = projectFilePath;
 					this.appDirectoryPath = path.join(projectDir, constants.APP_FOLDER_NAME);
 					this.appResourcesDirectoryPath = path.join(projectDir, constants.APP_FOLDER_NAME, constants.APP_RESOURCES_FOLDER_NAME);
-					this.projectId = data.id;
+					this.projectIdentifiers = this.getProjectIdentifiers(data.id);
 					this.dependencies = fileContent.dependencies;
 					this.devDependencies = fileContent.devDependencies;
 					this.projectType = this.getProjectType();
@@ -87,6 +97,25 @@ export class ProjectData implements IProjectData {
 		this.$errors.fail("No project found at or above '%s' and neither was a --path specified.", projectDir || this.$options.path || currentDir);
 	}
 
+	private getProjectIdentifiers(data :any): Mobile.IProjectIdentifier {
+		let identifier: Mobile.IProjectIdentifier;
+		data = data || "";
+
+		if (typeof data === "string") {
+			identifier = {
+				android: data,
+				ios: data
+			};
+		} else {
+			identifier = {
+				android: data.android || "",
+				ios: data.ios || ""
+			};
+		}
+
+		return identifier;
+	}
+
 	private getProjectType(): string {
 		let detectedProjectType = _.find(ProjectData.PROJECT_TYPES, (projectType) => projectType.isDefaultProjectType).type;
 
@@ -100,6 +129,10 @@ export class ProjectData implements IProjectData {
 		});
 
 		return detectedProjectType;
+	}
+
+	private warnProjectId(): void {
+		this.$logger.warnWithLabel("IProjectData.projectId is depricated. Please use IProjectData.projectIdentifiers[platform].");
 	}
 }
 $injector.register("projectData", ProjectData);

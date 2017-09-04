@@ -77,12 +77,12 @@ interface IPluginVariablesService {
 	 * @param {IProjectData} projectData DTO with information about the project.
 	 * @return {void}
 	 */
-	interpolateAppIdentifier(pluginConfigurationFilePath: string, projectData: IProjectData): void;
+	interpolateAppIdentifier(pluginConfigurationFilePath: string, projectIdentifier: string): void;
 
 	/**
 	 * Replaces both plugin variables and appIdentifier
 	 */
-	interpolate(pluginData: IPluginData, pluginConfigurationFilePath: string, projectData: IProjectData): Promise<void>;
+	interpolate(pluginData: IPluginData, pluginConfigurationFilePath: string, projectData: IProjectData, projectIdentifier: string): Promise<void>;
 
 	/**
 	 * Returns the
