@@ -54,6 +54,8 @@ export class AnalyticsService extends AnalyticsServiceBase {
 		await this.initAnalyticsStatuses();
 
 		if (!this.$staticConfig.disableAnalytics && this.analyticsStatuses[this.$staticConfig.TRACK_FEATURE_USAGE_SETTING_NAME] === AnalyticsStatus.enabled) {
+			this.$logger.trace("Will send the following information to Google Analytics:", gaSettings);
+
 			gaSettings.customDimensions = gaSettings.customDimensions || {};
 			gaSettings.customDimensions[GoogleAnalyticsCustomDimensions.client] = this.$options.analyticsClient || (isInteractive() ? AnalyticsClients.Cli : AnalyticsClients.Unknown);
 
@@ -98,8 +100,6 @@ export class AnalyticsService extends AnalyticsServiceBase {
 			label,
 			customDimensions
 		};
-
-		this.$logger.trace("Will send the following information to Google Analytics:", googleAnalyticsEventData);
 
 		await this.trackInGoogleAnalytics(googleAnalyticsEventData);
 	}
