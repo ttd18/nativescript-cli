@@ -1,6 +1,7 @@
 import { createGUID } from "../common/helpers";
+import { exported } from "../common/decorators";
 
-class AnalyticsSettingsService implements IAnalyticsSettingsService {
+export class AnalyticsSettingsService implements IAnalyticsSettingsService {
 	private static SESSIONS_STARTED_KEY_PREFIX = "SESSIONS_STARTED_";
 
 	constructor(private $userSettingsService: UserSettings.IUserSettingsService,
@@ -15,6 +16,7 @@ class AnalyticsSettingsService implements IAnalyticsSettingsService {
 		return this.getSettingValueOrDefault("USER_ID");
 	}
 
+	@exported("analyticsSettingsService")
 	public getClientId(): Promise<string> {
 		return this.getSettingValueOrDefault(this.$staticConfig.ANALYTICS_INSTALLATION_ID_SETTING_NAME);
 	}

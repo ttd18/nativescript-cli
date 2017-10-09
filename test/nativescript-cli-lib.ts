@@ -4,7 +4,7 @@ import * as path from "path";
 import * as childProcess from "child_process";
 const nodeArgs = require(path.join(__dirname, "..", "lib", "common", "scripts", "node-args")).getNodeArgs();
 
-describe("nativescript-cli-lib", () => {
+describe.only("nativescript-cli-lib", () => {
 	it("is main entry of the package", () => {
 		const packageJsonContent = fs.readFileSync(path.join(__dirname, "..", "package.json")).toString();
 		const jsonContent = JSON.parse(packageJsonContent);
@@ -21,7 +21,8 @@ describe("nativescript-cli-lib", () => {
 		npm: ["install", "uninstall", "view", "search"],
 		extensibilityService: ["loadExtensions", "loadExtension", "getInstalledExtensions", "installExtension", "uninstallExtension"],
 		liveSyncService: ["liveSync", "stopLiveSync", "enableDebugging", "disableDebugging", "attachDebugger"],
-		debugService: ["debug"]
+		debugService: ["debug"],
+		analyticsSettingsService: ["getClientId"]
 	};
 
 	const pathToEntryPoint = path.join(__dirname, "..", "lib", "nativescript-cli-lib.js").replace(/\\/g, "\\\\");
