@@ -218,7 +218,16 @@ export class ProjectChangesService implements IProjectChangesService {
 		return false;
 	}
 
-	private containsNewerFiles(dir: string, skipDir: string, projectData: IProjectData, processFunc?: (filePath: string, projectData: IProjectData) => boolean): boolean {
+	private containsNewerFiles(dir: string, skipDir: string, projectData: IProjectData, processFunc?: (filePath: string, projectData: IProjectData) => boolean, visitedRealPaths?: Set<string>): boolean {
+
+		visitedRealPaths = visitedRealPaths || new Set<string>();
+
+		const dirRPath = this.$fs.realpath(dir);
+		if (visitedRealPaths.has(dirRPath)) {
+			return;
+		}
+		visitedRealPaths.add(dirRPath);
+
 		const dirFileStat = this.$fs.getFsStats(dir);
 		if (this.isFileModified(dirFileStat, dir)) {
 			return true;
@@ -230,6 +239,12 @@ export class ProjectChangesService implements IProjectChangesService {
 			if (filePath === skipDir) {
 				continue;
 			}
+
+			const fileRPath = this.$fs.realpath(filePath);
+			if (visitedRealPaths.has(fileRPath)) {
+				continue;
+			}
+			visitedRealPaths.add(fileRPath);
 
 			const fileStats = this.$fs.getFsStats(filePath);
 			const changed = this.isFileModified(fileStats, filePath);
@@ -247,7 +262,7 @@ export class ProjectChangesService implements IProjectChangesService {
 			}
 
 			if (fileStats.isDirectory()) {
-				if (this.containsNewerFiles(filePath, skipDir, projectData, processFunc)) {
+				if (this.containsNewerFiles(filePath, skipDir, projectData, processFunc, visitedRealPaths)) {
 					return true;
 				}
 			}
