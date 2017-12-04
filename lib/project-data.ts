@@ -35,6 +35,7 @@ export class ProjectData implements IProjectData {
 		this.warnProjectId();
 		return this.projectIdentifiers.ios;
 	}
+	//just in case hook/extension modifies it.
 	set projectId(identifier: string) {
 		this.warnProjectId();
 		this.projectIdentifiers.ios = identifier;
@@ -80,7 +81,7 @@ export class ProjectData implements IProjectData {
 					this.projectFilePath = projectFilePath;
 					this.appDirectoryPath = path.join(projectDir, constants.APP_FOLDER_NAME);
 					this.appResourcesDirectoryPath = path.join(projectDir, constants.APP_FOLDER_NAME, constants.APP_RESOURCES_FOLDER_NAME);
-					this.projectIdentifiers = this.getProjectIdentifiers(data.id);
+					this.projectIdentifiers = this.initializeProjectIdentifiers(data.id);
 					this.dependencies = fileContent.dependencies;
 					this.devDependencies = fileContent.devDependencies;
 					this.projectType = this.getProjectType();
@@ -97,7 +98,7 @@ export class ProjectData implements IProjectData {
 		this.$errors.fail("No project found at or above '%s' and neither was a --path specified.", projectDir || this.$options.path || currentDir);
 	}
 
-	private getProjectIdentifiers(data :any): Mobile.IProjectIdentifier {
+	private initializeProjectIdentifiers(data :any): Mobile.IProjectIdentifier {
 		let identifier: Mobile.IProjectIdentifier;
 		data = data || "";
 

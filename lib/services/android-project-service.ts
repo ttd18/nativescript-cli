@@ -258,7 +258,7 @@ export class AndroidProjectService extends projectServiceBaseLib.PlatformProject
 		try {
 			shell.sed('-i', /__PACKAGE__/, projectData.projectIdentifiers.android, userAppGradleFilePath);
 		} catch (e) {
-			// Ignore
+			this.$logger.trace(`Templates updated and no need for replace in appgradle.`);
 		}
 	}
 
