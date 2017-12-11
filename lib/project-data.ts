@@ -98,7 +98,7 @@ export class ProjectData implements IProjectData {
 		this.$errors.fail("No project found at or above '%s' and neither was a --path specified.", projectDir || this.$options.path || currentDir);
 	}
 
-	private initializeProjectIdentifiers(data :any): Mobile.IProjectIdentifier {
+	private initializeProjectIdentifiers(data: string | Mobile.IProjectIdentifier): Mobile.IProjectIdentifier {
 		let identifier: Mobile.IProjectIdentifier;
 		data = data || "";
 
