@@ -374,7 +374,7 @@ export class AndroidProjectService extends projectServiceBaseLib.PlatformProject
 	}
 
 	public ensureConfigurationFileInAppResources(projectData: IProjectData): void {
-		const originalAndroidManifestFilePath = path.join(projectData.appResourcesDirectoryPath, this.$devicePlatformsConstants.Android, this.getPlatformData(projectData).configurationFileName);
+		const originalAndroidManifestFilePath = path.join(projectData.appResourcesDirectoryPath, this.$devicePlatformsConstants.Android, "src", "main", this.getPlatformData(projectData).configurationFileName);
 
 		const manifestExists = this.$fs.exists(originalAndroidManifestFilePath);
 
@@ -383,16 +383,17 @@ export class AndroidProjectService extends projectServiceBaseLib.PlatformProject
 			return;
 		}
 		// Overwrite the AndroidManifest from runtime.
-		this.$fs.copyFile(originalAndroidManifestFilePath, this.getPlatformData(projectData).configurationFilePath);
+		// this.$fs.copyFile(originalAndroidManifestFilePath, this.getPlatformData(projectData).configurationFilePath);
+		// not needed, the entire sourceset will be copied
 	}
 
 	public prepareAppResources(appResourcesDirectoryPath: string, projectData: IProjectData): void {
-		const resourcesDirPath = path.join(appResourcesDirectoryPath, this.getPlatformData(projectData).normalizedPlatformName);
-		const valuesDirRegExp = /^values/;
-		const resourcesDirs = this.$fs.readDirectory(resourcesDirPath).filter(resDir => !resDir.match(valuesDirRegExp));
-		_.each(resourcesDirs, resourceDir => {
-			this.$fs.deleteDirectory(path.join(this.getAppResourcesDestinationDirectoryPath(projectData), resourceDir));
-		});
+		// const resourcesDirPath = path.join(appResourcesDirectoryPath, this.getPlatformData(projectData).normalizedPlatformName);
+		// const valuesDirRegExp = /^values/;
+		// const resourcesDirs = this.$fs.readDirectory(resourcesDirPath).filter(resDir => !resDir.match(valuesDirRegExp));
+		// _.each(resourcesDirs, resourceDir => {
+		// 	this.$fs.deleteDirectory(path.join(this.getAppResourcesDestinationDirectoryPath(projectData), resourceDir));
+		// });
 	}
 
 	public async preparePluginNativeCode(pluginData: IPluginData, projectData: IProjectData): Promise<void> {
