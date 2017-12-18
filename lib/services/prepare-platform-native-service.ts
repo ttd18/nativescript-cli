@@ -61,13 +61,15 @@ export class PreparePlatformNativeService extends PreparePlatformService impleme
 	}
 
 	private copyAppResources(platformData: IPlatformData, projectData: IProjectData): void {
-		const appResourcesDirectoryPath = path.resolve(path.join(platformData.platformProjectService.getAppResourcesDestinationDirectoryPath(projectData), "..", "..", "..", "..", "..", "..", "App_Resources", "Android", "src", "main"));
-		if (this.$fs.exists(appResourcesDirectoryPath)) {
-			platformData.platformProjectService.prepareAppResources(appResourcesDirectoryPath, projectData);
-			const appResourcesDestination = path.resolve(path.join(platformData.platformProjectService.getAppResourcesDestinationDirectoryPath(projectData), ".."));
-			const appMainSourceSet = path.resolve(path.join(appResourcesDestination, ".."));
-			this.$fs.ensureDirectoryExists(appResourcesDestination);
-			shell.cp("-Rf", appResourcesDirectoryPath, appMainSourceSet);
+		const appResourcesDestinationPath = platformData.platformProjectService.getAppResourcesDestinationDirectoryPath(projectData);
+		// app_resources directory path
+		const appResourcesSourcePath = platformData.platformProjectService.getAppResourcesSourceDirectoryPath(path.resolve(path.join(platformData.projectRoot, "..", "..")));
+
+		if (this.$fs.exists(appResourcesSourcePath)) {
+			platformData.platformProjectService.prepareAppResources(appResourcesDestinationPath, projectData);
+
+			this.$fs.ensureDirectoryExists(appResourcesDestinationPath);
+			shell.cp("-Rf", appResourcesSourcePath, appResourcesDestinationPath);
 		}
 	}
 
