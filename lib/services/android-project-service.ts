@@ -251,7 +251,7 @@ export class AndroidProjectService extends projectServiceBaseLib.PlatformProject
 		// Interpolate the apilevel and package
 		this.interpolateConfigurationFile(projectData, platformSpecificData);
 
-		const stringsFilePath = path.join(this.getAppResourcesDestinationDirectoryPath(projectData), 'values', 'strings.xml');
+		const stringsFilePath = path.join(this.getAppResourcesDestinationDirectoryPath(projectData), "main", "res", 'values', 'strings.xml');
 		shell.sed('-i', /__NAME__/, projectData.projectName, stringsFilePath);
 		shell.sed('-i', /__TITLE_ACTIVITY__/, projectData.projectName, stringsFilePath);
 
