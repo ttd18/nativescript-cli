@@ -88,6 +88,7 @@ export class AndroidProjectService extends projectServiceBaseLib.PlatformProject
 
 					return [
 						`${packageName}-${buildMode}.apk`,
+						`app-${buildMode}.apk`,
 						`${projectData.projectName}-${buildMode}.apk`,
 						`${projectData.projectName}.apk`
 					];
@@ -323,7 +324,9 @@ export class AndroidProjectService extends projectServiceBaseLib.PlatformProject
 					buildOptions,
 					{ stdio: buildConfig.buildOutputStdio || "inherit" },
 					{ emitOptions: { eventName: constants.BUILD_OUTPUT_EVENT_NAME }, throwError: true }));
-		} else {
+		}
+		// todo: pete: remove this check, ant-based projects havent been actual for 2 years now. 
+		else {
 			this.$errors.failWithoutHelp("Cannot complete build because this project is ANT-based." + EOL +
 				"Run `tns platform remove android && tns platform add android` to switch to Gradle and try again.");
 		}
