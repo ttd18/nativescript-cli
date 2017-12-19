@@ -1,6 +1,7 @@
 import * as constants from "./constants";
 import * as path from "path";
 import { EOL } from "os";
+import { cache } from "./common/decorators";
 
 interface IProjectType {
 	type: string;
@@ -132,8 +133,9 @@ export class ProjectData implements IProjectData {
 		return detectedProjectType;
 	}
 
+	@cache()
 	private warnProjectId(): void {
-		this.$logger.warnWithLabel("IProjectData.projectId is depricated. Please use IProjectData.projectIdentifiers[platform].");
+		this.$logger.warnWithLabel("IProjectData.projectId is deprecated. Please use IProjectData.projectIdentifiers[platform].");
 	}
 }
 $injector.register("projectData", ProjectData);

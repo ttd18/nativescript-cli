@@ -135,7 +135,7 @@ interface ILiveSyncInfo extends IProjectDir, IEnvOptions, IBundle, IRelease {
 	clean?: boolean;
 }
 
-interface ILivesyncEventData {
+interface ILiveSyncEventData {
 	deviceIdentifier: string,
 	applicationIdentifier?: string,
 	projectDir: string,

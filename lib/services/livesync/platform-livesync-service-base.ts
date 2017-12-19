@@ -122,9 +122,10 @@ export abstract class PlatformLiveSyncServiceBase {
 
 	protected async getAppData(syncInfo: IFullSyncInfo): Promise<Mobile.IDeviceAppData> {
 		const platform = syncInfo.device.deviceInfo.platform.toLowerCase();
-		const deviceProjectRootOptions: IDeviceProjectRootOptions = _.assign({ appIdentifier: syncInfo.projectData.projectIdentifiers[platform] }, syncInfo);
+		const appIdentifier = syncInfo.projectData.projectIdentifiers[platform];
+		const deviceProjectRootOptions: IDeviceProjectRootOptions = _.assign({ appIdentifier }, syncInfo);
 		return {
-			appIdentifier: syncInfo.projectData.projectIdentifiers[platform],
+			appIdentifier,
 			device: syncInfo.device,
 			platform: syncInfo.device.deviceInfo.platform,
 			getDeviceProjectRootPath: () => this.$devicePathProvider.getDeviceProjectRootPath(syncInfo.device, deviceProjectRootOptions),
