@@ -751,7 +751,7 @@ We will now place an empty obsolete compatability white screen LauncScreen.xib f
 		await this.$iOSEntitlementsService.merge(projectData);
 		await this.mergeProjectXcconfigFiles(release, projectData);
 		for (const pluginData of await this.getAllInstalledPlugins(projectData)) {
-			await this.$pluginVariablesService.interpolatePluginVariables(pluginData, this.getPlatformData(projectData).configurationFilePath, projectData);
+			await this.$pluginVariablesService.interpolatePluginVariables(pluginData, this.getPlatformData(projectData).configurationFilePath, projectData.projectDir);
 		}
 
 		this.$pluginVariablesService.interpolateAppIdentifier(this.getPlatformData(projectData).configurationFilePath, projectData.projectIdentifiers.ios);

@@ -428,7 +428,7 @@ export class AndroidProjectService extends projectServiceBaseLib.PlatformProject
 			const filesForInterpolation = this.$fs.enumerateFilesInDirectorySync(resourcesDestinationDirectoryPath, file => this.$fs.getFsStats(file).isDirectory() || path.extname(file) === constants.XML_FILE_EXTENSION) || [];
 			for (const file of filesForInterpolation) {
 				this.$logger.trace(`Interpolate data for plugin file: ${file}`);
-				await this.$pluginVariablesService.interpolate(pluginData, file, projectData, projectData.projectIdentifiers.android);
+				await this.$pluginVariablesService.interpolate(pluginData, file, projectData.projectDir, projectData.projectIdentifiers.android);
 			}
 		}
 
